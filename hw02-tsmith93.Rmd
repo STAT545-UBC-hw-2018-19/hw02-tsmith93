@@ -1,0 +1,84 @@
+---
+title: "hw02-tsmith93"
+author: "Thomas Smith"
+date: '2018-09-19'
+output: html_document
+---
+Load gapminder and tidyverse
+```{r}
+library(gapminder)
+library(tidyverse)
+```
+
+What type of file?
+```{r}
+class(gapminder)
+```
+The function class (above) shows this is a tibble data frame, tibble, and a data frame
+
+You can fin out the number of observations/rows and variable/collumns, respectively: 
+```{r}
+dim(gapminder)
+```
+This shows there are 6 collumns/variables and 1704 rows/observations
+
+Alternatively, you can use individual functions to identify either number of rows:
+```{r}
+nrow(gapminder)
+```
+
+Or collumns:
+```{r}
+ncol(gapminder)
+```
+
+You can also figure out what is the type of each variables individually:
+```{r}
+class(gapminder$country)
+```
+
+Or for all of them!
+```{r}
+lapply(gapminder, class)
+```
+
+You can also look at the range of variables, whether they be categorical:
+```{r}
+levels(gapminder$country)
+```
+
+Or quantitative:
+```{r}
+range(gapminder$lifeExp)
+```
+
+Here is a summary of the data, including distribution:
+```{r}
+summary(gapminder)
+```
+
+Specific summary statistics can also be shown, such as the mean of each variable:
+```{r}
+lapply(gapminder, mean)
+```
+
+We are also able to filter our data in order to plot data in a more precise way:
+```{r}
+select(gapminder, country, year, lifeExp)
+```
+
+Alternatively, filter:
+```{r}
+filter(gapminder, lifeExp>34)
+```
+
+Another way is to use piping:
+```{r}
+gapminder %>% 
+  filter(lifeExp<30)
+```
+
+TA DA, done... almost...
+
+
+
