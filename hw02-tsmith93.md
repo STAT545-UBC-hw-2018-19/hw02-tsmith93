@@ -228,6 +228,62 @@ lapply(gapminder, mean)
     ## $gdpPercap
     ## [1] 7215.327
 
+Next we can plot some of these variables. To start off, we will do a scatterplot of two variables. But before then, it is always good practice to make a grammar component table:
+
+| Grammar Component     | Specification |
+|-----------------------|---------------|
+| **data**              | `gapminder`   |
+| **aesthetic mapping** | `x`and `y`    |
+| **geometric object**  | point         |
+| scale                 | linear        |
+| statistical transform | none          |
+| coordinate system     | rectangular   |
+| facetting             | none          |
+
+``` r
+ggplot(gapminder, aes(x=lifeExp, y=pop)) + 
+    geom_point()
+```
+
+![](hw02-tsmith93_files/figure-markdown_github/unnamed-chunk-12-1.png)
+
+We can also present data for one quantitative variable using plots such as histograms:
+
+| Grammar Component     | Specification |
+|-----------------------|---------------|
+| **data**              | `gapminder`   |
+| **aesthetic mapping** | `x`           |
+| **geometric object**  | histogram     |
+| scale                 | linear        |
+| statistical transform | none          |
+
+``` r
+ggplot(gapminder, aes(gdpPercap)) +
+    geom_histogram()
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+![](hw02-tsmith93_files/figure-markdown_github/unnamed-chunk-13-1.png)
+
+Finally, we can plot quantitative and categorical data together. A popular choice for this is a boxplot:
+
+| Grammar Component     | Specification    |
+|-----------------------|------------------|
+| **data**              | `gapminder`      |
+| **aesthetic mapping** | `x` and `y`      |
+| **geometric object**  | boxplot          |
+| scale                 | log-y scale      |
+| statistical transform | 5-number summary |
+
+``` r
+a <- ggplot(gapminder, aes(continent, lifeExp)) +
+  scale_y_log10()
+a
+```
+
+![](hw02-tsmith93_files/figure-markdown_github/unnamed-chunk-14-1.png)
+
 We are also able to filter our data in order to plot data in a more precise way:
 
 ``` r
@@ -282,5 +338,64 @@ gapminder %>%
     ##   <fct>       <fct>     <int>   <dbl>   <int>     <dbl>
     ## 1 Afghanistan Asia       1952    28.8 8425333      779.
     ## 2 Rwanda      Africa     1992    23.6 7290203      737.
+
+Now, why don't we apply filters to `ggplot()`!
+
+| Grammar Component     | Specification |
+|-----------------------|---------------|
+| **data**              | `gapminder`   |
+| **aesthetic mapping** |               |
+| **geometric object**  |               |
+| scale                 |               |
+| statistical transform |               |
+
+``` r
+gapminder %>% 
+ filter(country == "India") %>% 
+ ggplot(aes(year, pop)) +
+ geom_line() +
+ geom_point()
+```
+
+![](hw02-tsmith93_files/figure-markdown_github/unnamed-chunk-18-1.png)
+
+Or we can even plot the same information for multiple countries at the same time:
+
+``` r
+c <- ggplot(gapminder, aes(year, lifeExp))
+c + geom_line()
+```
+
+![](hw02-tsmith93_files/figure-markdown_github/unnamed-chunk-19-1.png)
+
+``` r
+c + geom_line(aes(group=country), alpha=0.2)
+```
+
+![](hw02-tsmith93_files/figure-markdown_github/unnamed-chunk-19-2.png)
+
+Now for some extra fun, lets evaluate this data line where the author was hoping to get data only from Afghanistan and Rwanda.
+
+``` r
+filter(gapminder, country == c("Rwanda", "Afghanistan"))
+```
+
+    ## # A tibble: 12 x 6
+    ##    country     continent  year lifeExp      pop gdpPercap
+    ##    <fct>       <fct>     <int>   <dbl>    <int>     <dbl>
+    ##  1 Afghanistan Asia       1957    30.3  9240934      821.
+    ##  2 Afghanistan Asia       1967    34.0 11537966      836.
+    ##  3 Afghanistan Asia       1977    38.4 14880372      786.
+    ##  4 Afghanistan Asia       1987    40.8 13867957      852.
+    ##  5 Afghanistan Asia       1997    41.8 22227415      635.
+    ##  6 Afghanistan Asia       2007    43.8 31889923      975.
+    ##  7 Rwanda      Africa     1952    40    2534927      493.
+    ##  8 Rwanda      Africa     1962    43    3051242      597.
+    ##  9 Rwanda      Africa     1972    44.6  3992121      591.
+    ## 10 Rwanda      Africa     1982    46.2  5507565      882.
+    ## 11 Rwanda      Africa     1992    23.6  7290203      737.
+    ## 12 Rwanda      Africa     2002    43.4  7852401      786.
+
+It appears they did so correctly!
 
 TA DA, done... almost...

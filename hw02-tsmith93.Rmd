@@ -62,6 +62,54 @@ Specific summary statistics can also be shown, such as the mean of each variable
 lapply(gapminder, mean)
 ```
 
+Next we can plot some of these variables. To start off, we will do a scatterplot of two variables. But before then, it is always good practice to make a grammar component table:
+
+| Grammar Component     | Specification |
+|-----------------------|---------------|
+| __data__              | `gapminder` |
+| __aesthetic mapping__ | `x`and `y` |
+| __geometric object__  | point |
+| scale                 | linear  |
+| statistical transform | none |
+| coordinate system     | rectangular |
+| facetting             | none |
+
+```{r}
+ggplot(gapminder, aes(x=lifeExp, y=pop)) + 
+    geom_point()
+```
+
+We can also present data for one quantitative variable using plots such as histograms:
+
+| Grammar Component     | Specification |
+|-----------------------|---------------|
+| __data__              | `gapminder` |
+| __aesthetic mapping__ |  `x` |
+| __geometric object__  |  histogram|
+| scale                 |  linear |
+| statistical transform |  none |
+
+```{r}
+ggplot(gapminder, aes(gdpPercap)) +
+    geom_histogram()
+```
+
+Finally, we can plot quantitative and categorical data together. A popular choice for this is a boxplot:
+
+| Grammar Component     | Specification |
+|-----------------------|---------------|
+| __data__              | `gapminder` |
+| __aesthetic mapping__ |  `x` and `y`|
+| __geometric object__  |  boxplot |
+| scale                 |  log-y scale |
+| statistical transform |  5-number summary |
+
+```{r}
+a <- ggplot(gapminder, aes(continent, lifeExp)) +
+  scale_y_log10()
+a
+```
+
 We are also able to filter our data in order to plot data in a more precise way:
 ```{r}
 select(gapminder, country, year, lifeExp)
@@ -77,6 +125,40 @@ Another way is to use piping:
 gapminder %>% 
   filter(lifeExp<30)
 ```
+
+Now, why don't we apply filters to `ggplot()`!
+
+| Grammar Component     | Specification |
+|-----------------------|---------------|
+| __data__              | `gapminder` |
+| __aesthetic mapping__ |  |
+| __geometric object__  |  |
+| scale                 |  |
+| statistical transform |  |
+
+```{r}
+gapminder %>% 
+ filter(country == "India") %>% 
+ ggplot(aes(year, pop)) +
+ geom_line() +
+ geom_point()
+```
+
+Or we can even plot the same information for multiple countries at the same time:
+
+```{r}
+c <- ggplot(gapminder, aes(year, lifeExp))
+c + geom_line()
+c + geom_line(aes(group=country), alpha=0.2)
+```
+
+Now for some extra fun, lets evaluate this data line where the author was hoping to get data only from Afghanistan and Rwanda.
+
+```{r}
+filter(gapminder, country == c("Rwanda", "Afghanistan"))
+```
+
+It appears they did so correctly!
 
 TA DA, done... almost...
 
