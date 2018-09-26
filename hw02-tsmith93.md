@@ -3,27 +3,33 @@ hw02-tsmith93
 Thomas Smith
 2018-09-19
 
-Load gapminder and tidyverse
+Initial exploration
+-------------------
+
+If you haven't already done so, download both gapminder and tidyverse using `install.packages()`
+
+Next load gapminder and tidyverse:
 
 ``` r
 library(gapminder)
 library(tidyverse)
 ```
 
-    ## ── Attaching packages ─────────────────────────────────────────────── tidyverse 1.2.1 ──
+    ## ── Attaching packages ──────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
 
     ## ✔ ggplot2 3.0.0     ✔ purrr   0.2.5
     ## ✔ tibble  1.4.2     ✔ dplyr   0.7.6
     ## ✔ tidyr   0.8.1     ✔ stringr 1.3.1
     ## ✔ readr   1.1.1     ✔ forcats 0.3.0
 
-    ## ── Conflicts ────────────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ── Conflicts ─────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
     ## ✖ dplyr::filter() masks stats::filter()
     ## ✖ dplyr::lag()    masks stats::lag()
 
-What type of file?
+What type of file is gapminder?
 
 ``` r
+#use class function
 class(gapminder)
 ```
 
@@ -34,6 +40,7 @@ The function class (above) shows this is a tibble data frame, tibble, and a data
 You can fin out the number of observations/rows and variable/collumns, respectively:
 
 ``` r
+#dim is short for dimensions!
 dim(gapminder)
 ```
 
@@ -44,6 +51,7 @@ This shows there are 6 collumns/variables and 1704 rows/observations
 Alternatively, you can use individual functions to identify either number of rows:
 
 ``` r
+#n represents numbers
 nrow(gapminder)
 ```
 
@@ -60,6 +68,7 @@ ncol(gapminder)
 You can also figure out what is the type of each variables individually:
 
 ``` r
+#first call upon the dataframe, followed by the variable you want to investigate
 class(gapminder$country)
 ```
 
@@ -88,6 +97,10 @@ lapply(gapminder, class)
     ## 
     ## $gdpPercap
     ## [1] "numeric"
+
+``` r
+#lapply will call upon all the variables within the specified dataframe
+```
 
 You can also look at the range of variables, whether they be categorical:
 
@@ -167,6 +180,10 @@ levels(gapminder$country)
     ## [139] "West Bank and Gaza"       "Yemen, Rep."             
     ## [141] "Zambia"                   "Zimbabwe"
 
+``` r
+#levels is used specifically for categorical variables
+```
+
 Or quantitative:
 
 ``` r
@@ -174,6 +191,10 @@ range(gapminder$lifeExp)
 ```
 
     ## [1] 23.599 82.603
+
+``` r
+#range is used for quantitative variables
+```
 
 Here is a summary of the data, including distribution:
 
@@ -197,6 +218,12 @@ summary(gapminder)
     ##  3rd Qu.:1.959e+07   3rd Qu.:  9325.5  
     ##  Max.   :1.319e+09   Max.   :113523.1  
     ## 
+
+``` r
+#summary will show the spread of the data. Specifically, it tells you the minumum and maximum values, the 1st and 3rd quartile, the median and the mean.
+```
+
+For all the categorical variables, such as country and continent, only the total number of observations are shown. For quantitative variables, the distribution of data is shown.
 
 Specific summary statistics can also be shown, such as the mean of each variable:
 
@@ -228,6 +255,17 @@ lapply(gapminder, mean)
     ## $gdpPercap
     ## [1] 7215.327
 
+``` r
+#Again, lapply allows you to look all variables with one command
+```
+
+No mean values are shown for the categorical variables as it is not possible!
+
+Visual representation
+---------------------
+
+### Plotting two variables together
+
 Next we can plot some of these variables. To start off, we will do a scatterplot of two variables. But before then, it is always good practice to make a grammar component table:
 
 | Grammar Component     | Specification |
@@ -241,11 +279,37 @@ Next we can plot some of these variables. To start off, we will do a scatterplot
 | facetting             | none          |
 
 ``` r
-ggplot(gapminder, aes(x=lifeExp, y=pop)) + 
-    geom_point()
+#Make things easy by assigning a standard plot to variable title "lvsp", meaning lifeExp vs. population
+lvsp <- ggplot(gapminder, aes(x=pop, y=lifeExp)) 
+#next add a geometric object so you can actually see the data ;)
+lvsp + geom_point()
 ```
 
-![](hw02-tsmith93_files/figure-markdown_github/unnamed-chunk-12-1.png)
+![](hw02-tsmith93_files/figure-markdown_github/unnamed-chunk-12-1.png) This plot shows how life expectancy increases with gdpPercap. Lets more clearly present this information with a trendline.
+
+Using multiple functions, you can remove "distracting" elements in the plot.
+
+``` r
+lvsp + geom_point() + 
+#remove the background grid and colour
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank(),
+#add axis lines        
+  axis.line = element_line(colour = "black"))
+```
+
+![](hw02-tsmith93_files/figure-markdown_github/unnamed-chunk-13-1.png)
+
+Or you can more clearly present what the data is showing:
+
+``` r
+lvsp + geom_point() +
+#this line adds a trendline with lm meaning linear model, se = FALSE removes standard error bars, aes makes the trendline for each continent a different colour  
+  geom_smooth(method = "lm", se = FALSE, aes(colour = continent))
+```
+
+![](hw02-tsmith93_files/figure-markdown_github/unnamed-chunk-14-1.png) This shows that in Africa, life expectancy increases the most rapidly with gdp per capita compared to other continents.
+
+### Plotting one variable
 
 We can also present data for one quantitative variable using plots such as histograms:
 
@@ -258,15 +322,17 @@ We can also present data for one quantitative variable using plots such as histo
 | statistical transform | none          |
 
 ``` r
+#First describe the data and aesthetic mapping
 ggplot(gapminder, aes(gdpPercap)) +
-    geom_histogram()
+#Next add the geometric object which is a histogram, and describe the width of the bins, in this case 30
+    geom_histogram(bins = 30)
 ```
 
-    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+![](hw02-tsmith93_files/figure-markdown_github/unnamed-chunk-15-1.png)
 
-![](hw02-tsmith93_files/figure-markdown_github/unnamed-chunk-13-1.png)
+### Plotting categorical variables with quantitative variables
 
-Finally, we can plot quantitative and categorical data together. A popular choice for this is a boxplot:
+A popular choice for plotting the ttwo types of variables is with a boxplot:
 
 | Grammar Component     | Specification    |
 |-----------------------|------------------|
@@ -278,13 +344,18 @@ Finally, we can plot quantitative and categorical data together. A popular choic
 
 ``` r
 a <- ggplot(gapminder, aes(continent, lifeExp)) +
+#you can also add a log-y scale with this next function
   scale_y_log10()
-a
+#add a boxplot, and maybve even some colour!
+a + geom_boxplot(aes(fill = continent))
 ```
 
-![](hw02-tsmith93_files/figure-markdown_github/unnamed-chunk-14-1.png)
+![](hw02-tsmith93_files/figure-markdown_github/unnamed-chunk-16-1.png)
 
-We are also able to filter our data in order to plot data in a more precise way:
+Sorting data
+------------
+
+We can use functions such as select to specify the data we want to look at:
 
 ``` r
 select(gapminder, country, year, lifeExp)
@@ -305,10 +376,14 @@ select(gapminder, country, year, lifeExp)
     ## 10 Afghanistan  1997    41.8
     ## # ... with 1,694 more rows
 
+``` r
+#first specify the dataframe, followed by all the variables you want to include
+```
+
 Alternatively, filter:
 
 ``` r
-filter(gapminder, lifeExp>34)
+filter(gapminder, lifeExp > 34)
 ```
 
     ## # A tibble: 1,680 x 6
@@ -326,11 +401,17 @@ filter(gapminder, lifeExp>34)
     ## 10 Albania     Europe     1952    55.2  1282697     1601.
     ## # ... with 1,670 more rows
 
+``` r
+#the dataframe, followed by a certain rule you would like to apply
+```
+
+Look! Only the rows where life expectancy above 30 is shown.
+
 Another way is to use piping:
 
 ``` r
 gapminder %>% 
-  filter(lifeExp<30)
+  filter(lifeExp < 30)
 ```
 
     ## # A tibble: 2 x 6
@@ -341,40 +422,72 @@ gapminder %>%
 
 Now, why don't we apply filters to `ggplot()`!
 
-| Grammar Component     | Specification |
-|-----------------------|---------------|
-| **data**              | `gapminder`   |
-| **aesthetic mapping** |               |
-| **geometric object**  |               |
-| scale                 |               |
-| statistical transform |               |
+| Grammar Component     | Specification  |
+|-----------------------|----------------|
+| **data**              | `gapminder`    |
+| **aesthetic mapping** | \`x and y      |
+| **geometric object**  | line and point |
+| scale                 | linear         |
+| statistical transform | none           |
 
 ``` r
 gapminder %>% 
+#pipe out a specific country  
  filter(country == "India") %>% 
+#specify x and y variables
  ggplot(aes(year, pop)) +
+#add geometric objects
  geom_line() +
  geom_point()
 ```
 
-![](hw02-tsmith93_files/figure-markdown_github/unnamed-chunk-18-1.png)
+![](hw02-tsmith93_files/figure-markdown_github/unnamed-chunk-20-1.png)
 
 Or we can even plot the same information for multiple countries at the same time:
 
 ``` r
+#Specify the data and aesthetic mapping to a specific variable
 c <- ggplot(gapminder, aes(year, lifeExp))
-c + geom_line()
+#Add a geometric shape
+c + geom_line() +
+#Add trendlines for country
+  geom_line(aes(group=country), alpha=0.2)
 ```
 
-![](hw02-tsmith93_files/figure-markdown_github/unnamed-chunk-19-1.png)
+![](hw02-tsmith93_files/figure-markdown_github/unnamed-chunk-21-1.png)
+
+Extra
+-----
+
+### Interesting dplyr functions
+
+Arrange dataframe by descending order for a specific variable:
 
 ``` r
-c + geom_line(aes(group=country), alpha=0.2)
+#Within the `desc()`, specify what variable you want to sort
+arrange(gapminder, desc(lifeExp))
 ```
 
-![](hw02-tsmith93_files/figure-markdown_github/unnamed-chunk-19-2.png)
+    ## # A tibble: 1,704 x 6
+    ##    country          continent  year lifeExp       pop gdpPercap
+    ##    <fct>            <fct>     <int>   <dbl>     <int>     <dbl>
+    ##  1 Japan            Asia       2007    82.6 127467972    31656.
+    ##  2 Hong Kong, China Asia       2007    82.2   6980412    39725.
+    ##  3 Japan            Asia       2002    82   127065841    28605.
+    ##  4 Iceland          Europe     2007    81.8    301931    36181.
+    ##  5 Switzerland      Europe     2007    81.7   7554661    37506.
+    ##  6 Hong Kong, China Asia       2002    81.5   6762476    30209.
+    ##  7 Australia        Oceania    2007    81.2  20434176    34435.
+    ##  8 Spain            Europe     2007    80.9  40448191    28821.
+    ##  9 Sweden           Europe     2007    80.9   9031088    33860.
+    ## 10 Israel           Asia       2007    80.7   6426679    25523.
+    ## # ... with 1,694 more rows
 
-Now for some extra fun, lets evaluate this data line where the author was hoping to get data only from Afghanistan and Rwanda.
+Looks like Japan had the highest overall average life expectancy in 2007!
+
+### Evaluating someone elses data chunk
+
+Lets evaluate this data line where the author was hoping to get data only from Afghanistan and Rwanda.
 
 ``` r
 filter(gapminder, country == c("Rwanda", "Afghanistan"))
@@ -396,6 +509,4 @@ filter(gapminder, country == c("Rwanda", "Afghanistan"))
     ## 11 Rwanda      Africa     1992    23.6  7290203      737.
     ## 12 Rwanda      Africa     2002    43.4  7852401      786.
 
-It appears they did so correctly!
-
-TA DA, done... almost...
+As only data from Afghanistan and Rwanda are shown, it appears they did so correctly!
