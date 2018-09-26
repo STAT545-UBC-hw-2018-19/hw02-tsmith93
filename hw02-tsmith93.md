@@ -285,7 +285,7 @@ lvsp <- ggplot(gapminder, aes(x=pop, y=lifeExp))
 lvsp + geom_point()
 ```
 
-![](hw02-tsmith93_files/figure-markdown_github/unnamed-chunk-12-1.png) This plot shows how life expectancy increases with gdpPercap. Lets more clearly present this information with a trendline.
+![](hw02-tsmith93_files/figure-markdown_github/SP_popvslifeExp-1.png) This plot shows how life expectancy increases with gdpPercap. Lets more clearly present this information with a trendline.
 
 Using multiple functions, you can remove "distracting" elements in the plot.
 
@@ -297,7 +297,7 @@ lvsp + geom_point() +
   axis.line = element_line(colour = "black"))
 ```
 
-![](hw02-tsmith93_files/figure-markdown_github/unnamed-chunk-13-1.png)
+![](hw02-tsmith93_files/figure-markdown_github/SP_popvslifeExp_clean-1.png)
 
 Or you can more clearly present what the data is showing:
 
@@ -307,7 +307,7 @@ lvsp + geom_point() +
   geom_smooth(method = "lm", se = FALSE, aes(colour = continent))
 ```
 
-![](hw02-tsmith93_files/figure-markdown_github/unnamed-chunk-14-1.png) This shows that in Africa, life expectancy increases the most rapidly with gdp per capita compared to other continents.
+![](hw02-tsmith93_files/figure-markdown_github/SP_popvslifeExp_colour-1.png) This shows that in Africa, life expectancy increases the most rapidly with gdp per capita compared to other continents.
 
 ### Plotting one variable
 
@@ -328,7 +328,7 @@ ggplot(gapminder, aes(gdpPercap)) +
     geom_histogram(bins = 30)
 ```
 
-![](hw02-tsmith93_files/figure-markdown_github/unnamed-chunk-15-1.png)
+![](hw02-tsmith93_files/figure-markdown_github/hist_gdpPercap-1.png)
 
 ### Plotting categorical variables with quantitative variables
 
@@ -350,7 +350,7 @@ a <- ggplot(gapminder, aes(continent, lifeExp)) +
 a + geom_boxplot(aes(fill = continent))
 ```
 
-![](hw02-tsmith93_files/figure-markdown_github/unnamed-chunk-16-1.png)
+![](hw02-tsmith93_files/figure-markdown_github/box_contvslifeExp-1.png)
 
 Sorting data
 ------------
@@ -441,7 +441,7 @@ gapminder %>%
  geom_point()
 ```
 
-![](hw02-tsmith93_files/figure-markdown_github/unnamed-chunk-20-1.png)
+![](hw02-tsmith93_files/figure-markdown_github/lifeExpIndia-1.png)
 
 Or we can even plot the same information for multiple countries at the same time:
 
@@ -454,7 +454,7 @@ c + geom_line() +
   geom_line(aes(group=country), alpha=0.2)
 ```
 
-![](hw02-tsmith93_files/figure-markdown_github/unnamed-chunk-21-1.png)
+![](hw02-tsmith93_files/figure-markdown_github/lifeExpallcountry-1.png)
 
 Extra
 -----

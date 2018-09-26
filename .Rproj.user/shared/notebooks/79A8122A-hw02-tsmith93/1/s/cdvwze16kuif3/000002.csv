@@ -1,0 +1,3 @@
+"0","lvsp + geom_point() +"
+"0","#this line adds a trendline with lm meaning linear model, se = FALSE removes standard error bars, aes makes the trendline for each continent a different colour  "
+"0","  geom_smooth(method = ""lm"", se = FALSE, aes(colour = continent))"

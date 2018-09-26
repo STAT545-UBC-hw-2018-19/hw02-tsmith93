@@ -1,0 +1,4 @@
+"0","#First describe the data and aesthetic mapping"
+"0","ggplot(gapminder, aes(gdpPercap)) +"
+"0","#Next add the geometric object which is a histogram, and describe the width of the bins, in this case 30"
+"0","    geom_histogram(bins = 30)"

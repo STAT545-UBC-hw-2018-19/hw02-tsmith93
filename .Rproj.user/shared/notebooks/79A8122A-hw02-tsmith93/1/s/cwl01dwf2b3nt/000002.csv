@@ -1,0 +1,6 @@
+"0","#first call upon the dataframe, followed by the variable you want to investigate"
+"0","class(gapminder$country)"
+"1","[1]"
+"1"," ""factor"""
+"1","
+"

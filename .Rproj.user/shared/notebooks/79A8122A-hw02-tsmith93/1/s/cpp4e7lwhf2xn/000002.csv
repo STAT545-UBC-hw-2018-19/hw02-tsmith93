@@ -1,0 +1,8 @@
+"0","gapminder %>% "
+"0","#pipe out a specific country  "
+"0"," filter(country == ""India"") %>% "
+"0","#specify x and y variables"
+"0"," ggplot(aes(year, lifeExp)) +"
+"0","#add geometric objects"
+"0"," geom_line() +"
+"0"," geom_point()"

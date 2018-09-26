@@ -1,0 +1,6 @@
+"0","#Specify the data and aesthetic mapping to a specific variable"
+"0","c <- ggplot(gapminder, aes(year, lifeExp))"
+"0","#Add a geometric shape"
+"0","c + geom_line() +"
+"0","#Add trendlines for country"
+"0","  geom_line(aes(group=country), alpha=0.2)"

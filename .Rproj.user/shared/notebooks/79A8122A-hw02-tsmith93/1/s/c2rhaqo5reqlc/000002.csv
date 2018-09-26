@@ -1,0 +1,4 @@
+"0","#Make things easy by assigning a standard plot to variable title ""lvsp"", meaning lifeExp vs. population"
+"0","lvsp <- ggplot(gapminder, aes(x=pop, y=lifeExp)) "
+"0","#next add a geometric object so you can actually see the data ;)"
+"0","lvsp + geom_point()"

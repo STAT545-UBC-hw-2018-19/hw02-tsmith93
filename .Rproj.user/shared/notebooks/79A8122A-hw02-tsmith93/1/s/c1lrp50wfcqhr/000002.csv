@@ -1,0 +1,5 @@
+"0","a <- ggplot(gapminder, aes(continent, lifeExp)) +"
+"0","#you can also add a log-y scale with this next function"
+"0","  scale_y_log10()"
+"0","#add a boxplot, and maybve even some colour!"
+"0","a + geom_boxplot(aes(fill = continent))"

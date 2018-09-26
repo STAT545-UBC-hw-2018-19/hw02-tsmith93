@@ -1,0 +1,5 @@
+"0","lvsp + geom_point() + "
+"0","#remove the background grid and colour"
+"0","  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank(),"
+"0","#add axis lines        "
+"0","  axis.line = element_line(colour = ""black""))"
