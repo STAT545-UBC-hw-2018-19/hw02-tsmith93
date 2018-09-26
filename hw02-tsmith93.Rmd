@@ -196,7 +196,7 @@ gapminder %>%
 #pipe out a specific country  
  filter(country == "India") %>% 
 #specify x and y variables
- ggplot(aes(year, pop)) +
+ ggplot(aes(year, lifeExp)) +
 #add geometric objects
  geom_line() +
  geom_point()
